@@ -1,0 +1,1 @@
+var endPoint, modeEndPoint, imageEndPoint;
