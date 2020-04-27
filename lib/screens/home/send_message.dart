@@ -146,7 +146,6 @@ class _NewMailPageState extends State<NewMailPage> {
                                 alignedDropdown: true,
                                 child: DropdownButton<String>(
                                     iconEnabledColor: Colors.white,
-                                    focusColor: Colors.red,
                                     style: Theme.of(context).textTheme.title,
                                     items: emails.map((String value) {
                                       return DropdownMenuItem(
@@ -198,7 +197,6 @@ class _NewMailPageState extends State<NewMailPage> {
                                     child: DropdownButton<String>(
                                       onChanged: null,
                                       iconEnabledColor: Colors.white,
-                                      focusColor: Colors.red,
                                       style: Theme.of(context).textTheme.title,
                                       items: [''].map((String value) {
                                         return DropdownMenuItem(
