@@ -52,7 +52,7 @@ class _ChooseDataBaseState extends State<ChooseDataBase> {
           ),
           body: Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            color: Color(0xffede6ea),
+            color: Colors.white,
             child: FutureBuilder(
                 future: getDatabaseUrl(),
                 builder: (context, snapshot) {

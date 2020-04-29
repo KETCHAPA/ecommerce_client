@@ -1,5 +1,6 @@
 import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/custom/menu_finalisation.dart';
+import 'package:client_bos_final/screens/account/update.dart';
 import 'package:client_bos_final/screens/cart/payment.dart';
 import 'package:flutter/material.dart';
 
@@ -146,39 +147,51 @@ class _FinalisationPageState extends State<FinalisationPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Adresse d\'envoi:',
-                                      style: TextStyle(fontSize: 15.0),
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      'Modifier',
-                                      style: TextStyle(fontSize: 15.0),
-                                    ),
-                                    Icon(
-                                      Icons.mode_edit,
-                                      size: 15.0,
-                                    )
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => UpdateData(
+                                                  user: snapshot.data,
+                                                  secondParameter: 'yes',
+                                                  items: widget.items,
+                                                  quantities: widget.quantities,
+                                                  total: widget.total,
+                                                  userId: widget.userId,
+                                                )));
+                                  },
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        'Adresse d\'envoi:',
+                                        style: TextStyle(fontSize: 15.0),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        'Modifier',
+                                        style: TextStyle(fontSize: 15.0),
+                                      ),
+                                      Icon(
+                                        Icons.mode_edit,
+                                        size: 15.0,
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(height: 10.0),
                                 Row(
                                   children: <Widget>[
                                     Text(
                                       '${snapshot.data['name'].toUpperCase()}',
-                                      style: TextStyle(fontSize: 15.0),
+                                      style: TextStyle(fontSize: 19.0),
                                     ),
                                     Spacer(),
                                     Text(
                                       snapshot.data['phone'],
-                                      style: TextStyle(fontSize: 15.0),
+                                      style: TextStyle(fontSize: 13.0),
                                     )
                                   ],
-                                ),
-                                SizedBox(
-                                  height: 15.0,
                                 ),
                                 Row(
                                   children: <Widget>[

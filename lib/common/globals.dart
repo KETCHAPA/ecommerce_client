@@ -335,6 +335,12 @@ logIn(client, String token) async {
   await prefs.setBool('isLogged', true);
 }
 
+updateStore(client) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String cli = json.encode(client);
+  await prefs.setString('currentClient', cli);
+}
+
 logOut() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool('isLogged', false);

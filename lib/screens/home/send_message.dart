@@ -21,7 +21,7 @@ class _NewMailPageState extends State<NewMailPage> {
   final _subjectNode = new FocusNode();
   final _contentNode = new FocusNode();
 
-  List<String> emails = [];
+  List<String> users = [];
   String receiver = '';
 
   Future<List<Client>> clients;
@@ -110,8 +110,8 @@ class _NewMailPageState extends State<NewMailPage> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         for (var item in snapshot.data) {
-                          if (!emails.contains(item.email)) {
-                            emails.add(item.email);
+                          if (!users.contains(item.email)) {
+                            users.add('${item.name} (${item.emails})');
                           }
                         }
                         return Container(
@@ -147,7 +147,7 @@ class _NewMailPageState extends State<NewMailPage> {
                                 child: DropdownButton<String>(
                                     iconEnabledColor: Colors.white,
                                     style: Theme.of(context).textTheme.title,
-                                    items: emails.map((String value) {
+                                    items: users.map((String value) {
                                       return DropdownMenuItem(
                                         child: new Text('$value'),
                                         value: value,

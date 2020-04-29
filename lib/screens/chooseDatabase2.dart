@@ -22,6 +22,12 @@ class _ChooseDataBase2State extends State<ChooseDataBase2> {
         });
       }
     }
+    logOutUser();
+  }
+
+  logOutUser() async {
+    token = '';
+    await logOut();
   }
 
   @override
@@ -68,7 +74,7 @@ class _ChooseDataBase2State extends State<ChooseDataBase2> {
           ),
           body: Container(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
-              color: Color(0xffede6ea),
+              color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,

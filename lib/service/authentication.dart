@@ -113,26 +113,28 @@ Future<bool> logout() async {
   return result;
 }
 
-Future<bool> update(Map<String, dynamic> params) async {
+Future<bool> update(Map<String, dynamic> params, String code) async {
   bool result = false;
   try {
     globals.token = await globals.getUserToken();
-    final response = await http.post('$endPoint/updateClient',
+    final response = await http.post('$endPoint/updateClient/$code',
         body: params,
         headers: {HttpHeaders.authorizationHeader: 'Bearer ${globals.token}'});
-    var data = json.decode(response.body);
     if (response.statusCode == 200) {
+      var data = json.decode(response.body);
       if (data['success'] == true) {
         result = true;
+        globals.updateStore(data['user']);
       }
       globals.errorMessageText = data['message'];
     } else {
       print(response.statusCode);
-      globals.errorMessageText = data['message'];
+      globals.errorMessageText = 'Une erreur est survenue';
+      throw Exception('Exception ${response.body}');
     }
   } catch (e) {
-    print('Exception: $e');
     globals.errorMessageText = 'Verifier votre connexion internet';
+    throw Exception('Exception: $e');
   }
 
   return result;

@@ -163,37 +163,59 @@ class _AccountPageState extends State<AccountPage> {
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: <Widget>[
-                                                              Row(
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text(
-                                                                    snapshot
-                                                                        .data[
-                                                                            'name']
-                                                                        .toUpperCase(),
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize:
-                                                                            12.0),
-                                                                  ),
-                                                                  Spacer(),
-                                                                  InkWell(
-                                                                    onTap: (){
-                                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateData(user: snapshot.data)));
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .mode_edit,
-                                                                      size: 14.0,
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              UpdateData(user: snapshot.data)));
+                                                                },
+                                                                child: Row(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Text(
+                                                                      snapshot
+                                                                          .data[
+                                                                              'name']
+                                                                          .toUpperCase(),
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              12.0),
                                                                     ),
-                                                                  )
-                                                                ],
+                                                                    Spacer(),
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => UpdateData(user: snapshot.data)));
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .mode_edit,
+                                                                        size:
+                                                                            14.0,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
                                                               ),
-                                                              Text(
-                                                                  snapshot.data[
-                                                                      'email']),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              UpdateData(user: snapshot.data)));
+                                                                },
+                                                                child: Text(
+                                                                    snapshot.data[
+                                                                        'email']),
+                                                              ),
                                                               Text(
                                                                   snapshot.data[
                                                                       'phone']),

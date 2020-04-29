@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   double maxDiscount;
   bool firstEntry = true;
   GlobalKey<RefreshIndicatorState> _refreshKey;
+  bool emptyBanners;
 
   _updateMaxDiscount(double value) {
     firstEntry = false;
@@ -44,6 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    emptyBanners = false;
     _refreshKey = GlobalKey<RefreshIndicatorState>();
     _allProducts = getAllProducts();
     _mainCategories = getMainCategories();
@@ -188,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                 decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(
-                                        left: 20.0, top: 0.0, bottom: 10.0),
+                                        left: 20.0, top: 10.0, bottom: 10.0),
                                     hintText: 'Recherche... ',
                                     hintStyle: TextStyle(color: Colors.black)),
                               ),
@@ -242,67 +244,141 @@ class _HomePageState extends State<HomePage> {
                                   bannerRedirection.add(item.shopId);
                                 }
                               }
-                              return Stack(
-                                children: <Widget>[
-                                  PageView.builder(
-                                    controller: _pageController,
-                                    onPageChanged: (val) {
-                                      setState(() {
-                                        _currentPage = val;
-                                      });
-                                    },
-                                    itemCount: bannerImages.length,
-                                    itemBuilder: (BuildContext context, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductsByIdPage(
-                                                          bannerRedirection[
-                                                              index])));
-                                        },
-                                        child: Image.network(
-                                            imagePath(bannerImages[index]),
-                                            fit: BoxFit.cover),
-                                      );
-                                    },
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Container(
-                                      width: 12.0 * bannerImages.length,
-                                      height: 20.0,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
+                              if (bannerImages.isEmpty) {
+                                for (var item in defaultBanners) {
+                                  if (!bannerImages.contains(item)) {
+                                    emptyBanners = true;
+                                    bannerImages.add(item);
+                                  }
+                                }
+                              }
+                              return emptyBanners
+                                  ? Stack(
+                                      children: <Widget>[
+                                        PageView.builder(
+                                          controller: _pageController,
+                                          onPageChanged: (val) {
+                                            setState(() {
+                                              _currentPage = val;
+                                            });
+                                          },
                                           itemCount: bannerImages.length,
                                           itemBuilder:
                                               (BuildContext context, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(2.0),
-                                              child: Icon(
-                                                Icons.brightness_1,
-                                                size: index == _currentPage
-                                                    ? 7.2
-                                                    : 7.0,
-                                                color: index == _currentPage
-                                                    ? Color(0xff31275c)
-                                                    : Colors.blueGrey
-                                                        .withOpacity(.3),
+                                            return Image.asset(
+                                                'img/${bannerImages[index]}',
+                                                fit: BoxFit.cover);
+                                          },
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Container(
+                                            width: 12.0 * bannerImages.length,
+                                            height: 20.0,
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: bannerImages.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            2.0),
+                                                    child: Icon(
+                                                      Icons.brightness_1,
+                                                      size:
+                                                          index == _currentPage
+                                                              ? 7.2
+                                                              : 7.0,
+                                                      color: index ==
+                                                              _currentPage
+                                                          ? Color(0xff31275c)
+                                                          : Colors.blueGrey
+                                                              .withOpacity(.3),
+                                                    ),
+                                                  );
+                                                },
                                               ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Stack(
+                                      children: <Widget>[
+                                        PageView.builder(
+                                          controller: _pageController,
+                                          onPageChanged: (val) {
+                                            setState(() {
+                                              _currentPage = val;
+                                            });
+                                          },
+                                          itemCount: bannerImages.length,
+                                          itemBuilder:
+                                              (BuildContext context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductsByIdPage(
+                                                                bannerRedirection[
+                                                                    index])));
+                                              },
+                                              child: Image.network(
+                                                  imagePath(
+                                                      bannerImages[index]),
+                                                  fit: BoxFit.cover),
                                             );
                                           },
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Container(
+                                            width: 12.0 * bannerImages.length,
+                                            height: 20.0,
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: bannerImages.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            2.0),
+                                                    child: Icon(
+                                                      Icons.brightness_1,
+                                                      size:
+                                                          index == _currentPage
+                                                              ? 7.2
+                                                              : 7.0,
+                                                      color: index ==
+                                                              _currentPage
+                                                          ? Color(0xff31275c)
+                                                          : Colors.blueGrey
+                                                              .withOpacity(.3),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
                             }
                             if (snapshot.hasError) {
                               return Padding(
@@ -1457,3 +1533,5 @@ class _ShopViewState extends State<ShopView> {
           );
   }
 }
+
+List<String> defaultBanners = ['default1.jpg', 'default2.jpg', 'default3.jpg'];

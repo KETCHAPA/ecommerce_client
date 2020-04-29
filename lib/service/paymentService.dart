@@ -36,7 +36,7 @@ Future<List> getPaymentWay(int id) async {
       return items;
     }
 
-    print(response.statusCode);
+    print(response.body);
     throw Exception('Impossible de recuperer les modes de paiement');
   } catch (e) {
     throw Exception('Impossible de recuperer les modes de paiement');

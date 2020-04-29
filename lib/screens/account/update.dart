@@ -3,6 +3,7 @@ import 'package:client_bos_final/custom/loading.dart';
 import 'package:client_bos_final/custom/logPainter.dart';
 import 'package:client_bos_final/custom/sweetAlert.dart';
 import 'package:client_bos_final/screens/account/account.dart';
+import 'package:client_bos_final/screens/cart/finalisation.dart';
 import 'package:client_bos_final/service/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -10,7 +11,17 @@ import 'package:sweetalert/sweetalert.dart';
 
 class UpdateData extends StatefulWidget {
   final Map user;
-  UpdateData({this.user});
+  final String secondParameter;
+  final List items, quantities;
+  final int total;
+  final int userId;
+  UpdateData(
+      {this.user,
+      this.secondParameter,
+      this.items,
+      this.userId,
+      this.total,
+      this.quantities});
   @override
   _UpdateDataState createState() => _UpdateDataState();
 }
@@ -70,11 +81,21 @@ class _UpdateDataState extends State<UpdateData> {
     progress = loadingWidget(context);
     progress.show();
 
-    await update(params).then((success) {
+    await update(params, widget.user['code']).then((success) {
       progress.hide();
       if (success) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AccountPage()));
+        widget.secondParameter == null
+            ? Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AccountPage()))
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FinalisationPage(
+                          items: widget.items,
+                          quantities: widget.quantities,
+                          total: widget.total,
+                          userId: widget.userId,
+                        )));
       } else {
         sweetalert(
             context: context,
@@ -146,7 +167,9 @@ class _UpdateDataState extends State<UpdateData> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(7.0),
                                           child: Text(
-                                            'Mon Compte',
+                                            widget.secondParameter == null
+                                                ? 'Mon Compte'
+                                                : 'Verification',
                                             style: TextStyle(color: Colors.red),
                                           ),
                                         ),
@@ -440,6 +463,8 @@ class _UpdateDataState extends State<UpdateData> {
                                                     controller:
                                                         _phoneController,
                                                     focusNode: _phoneNode,
+                                                    keyboardType:
+                                                        TextInputType.number,
                                                     textInputAction:
                                                         TextInputAction.done,
                                                     onFieldSubmitted: (val) {
@@ -790,19 +815,20 @@ class _UpdateDataState extends State<UpdateData> {
                                                             border: Border.all(
                                                                 color: Colors
                                                                     .blueGrey),
-                                                            borderRadius: BorderRadius.only(
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        40.0))),
+                                                            borderRadius:
+                                                                BorderRadius.only(
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                            40.0))),
                                                         child: Container(
                                                           child: Row(
-                                                            children: <
-                                                                Widget>[
+                                                            children: <Widget>[
                                                               Padding(
-                                                                padding: const EdgeInsets
-                                                                        .only(
-                                                                    left:
-                                                                        10.0),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
                                                                 child: Icon(
                                                                   Icons
                                                                       .person_pin,
@@ -811,10 +837,11 @@ class _UpdateDataState extends State<UpdateData> {
                                                                 ),
                                                               ),
                                                               Padding(
-                                                                padding: const EdgeInsets
-                                                                        .only(
-                                                                    left:
-                                                                        13.0),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            13.0),
                                                                 child: Text(
                                                                   '${(_gender ?? widget.user['gender'] ?? 'Non Renseigne').toUpperCase()}',
                                                                   style:
