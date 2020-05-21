@@ -12,8 +12,24 @@ class ChooseDataBase extends StatefulWidget {
 
 class _ChooseDataBaseState extends State<ChooseDataBase> {
   int isSelected;
-  bool nextLevel = true;
-  String _mode, _url, _image;
+  bool nextLevel = true, nextLevel2 = true;
+
+  void nextPage2() async {
+    setState(() {
+      nextLevel2 = false;
+    });
+    modeEndPoint = 'Mode production';
+    endPoint = 'https://apiecommerceproduction.bdconsulting-cm.com/api';
+    imageEndPoint = 'apiecommerceproduction';
+    setDatabaseUrl(endPoint, modeEndPoint, imageEndPoint);
+    Navigator.pushNamed(context, '/');
+  }
+
+  startTime2() {
+    Duration _duration = new Duration(milliseconds: 0);
+    return new Timer(_duration, nextPage2);
+  }
+
   void nextPage() async {
     setState(() {
       nextLevel = false;
@@ -32,136 +48,40 @@ class _ChooseDataBaseState extends State<ChooseDataBase> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          bottomNavigationBar: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-            child: OutlineButton(
-              child: Text('Valider'),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              onPressed: isSelected == null
-                  ? null
-                  : () async {
-                      endPoint = _url;
-                      modeEndPoint = _mode;
-                      imageEndPoint = _image;
-                      await setDatabaseUrl(_url, _mode, _image);
-                      Navigator.pushNamed(context, '/');
-                    },
-            ),
-          ),
           body: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            color: Colors.white,
-            child: FutureBuilder(
-                future: getDatabaseUrl(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data == '') {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 4.0),
-                            child: Text('Mode avec lequel vous allez'),
-                          ),
-                          Text('vous connecter'),
-                          Spacer(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.0, vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                SizedBox(height: 10.0),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 140,
-                                  child: ListView.builder(
-                                    physics: ScrollPhysics(parent: null),
-                                    itemCount: items.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            isSelected = index;
-                                            _mode = items[index].text;
-                                            _url = items[index].url;
-                                            _image = items[index].image;
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0, vertical: 5.0),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                index == isSelected
-                                                    ? Icons.check_box
-                                                    : Icons
-                                                        .check_box_outline_blank,
-                                                color: index == isSelected
-                                                    ? Colors.deepOrangeAccent
-                                                    : Colors.black
-                                                        .withOpacity(.1),
-                                              ),
-                                              SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              Text(
-                                                items[index].text,
-                                                style:
-                                                    TextStyle(fontSize: 15.0),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Spacer()
-                        ],
-                      );
-                    } else {
-                      endPoint = snapshot.data;
-                      nextLevel ? startTime() : SizedBox();
-                      return Scaffold(
-                        body: Container(
-                          color: Colors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Center(child: CircularProgressIndicator()),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                'Un instant',
-                                style: TextStyle(
-                                    fontFamily: 'Overlock',
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }),
-          )),
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        color: Color(0xffede6ea),
+        child: FutureBuilder(
+            future: getDatabaseUrl(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data == '') {
+                  nextLevel2 ? startTime2() : SizedBox();
+                } else {
+                  endPoint = snapshot.data;
+                  nextLevel ? startTime() : SizedBox();
+                }
+              }
+              return Scaffold(
+                body: Container(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Center(child: CircularProgressIndicator()),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Un instant',
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+      )),
     );
   }
 }

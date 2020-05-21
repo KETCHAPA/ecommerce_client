@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/custom/loading.dart';
 import 'package:client_bos_final/custom/logPainter.dart';
@@ -6,7 +9,10 @@ import 'package:client_bos_final/screens/account/account.dart';
 import 'package:client_bos_final/screens/cart/finalisation.dart';
 import 'package:client_bos_final/service/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:sweetalert/sweetalert.dart';
 
 class UpdateData extends StatefulWidget {
@@ -57,7 +63,24 @@ class _UpdateDataState extends State<UpdateData> {
     FocusScope.of(context).requestFocus(nextNode);
   }
 
+  Future<File> file, compressFile;
+
+  Future<File> compress(File file) async {
+    var dir = await path_provider.getTemporaryDirectory();
+    var result = await FlutterImageCompress.compressAndGetFile(
+        file.path, dir.absolute.path + file.path.split('/').last,
+        quality: 50);
+    return result;
+  }
+
+  getGalleryImage() {
+    setState(() {
+      file = ImagePicker.pickImage(source: ImageSource.gallery);
+    });
+  }
+
   String _gender;
+  String name = '', base64Image = '';
 
   setPage(int page) {
     setState(() {
@@ -78,6 +101,10 @@ class _UpdateDataState extends State<UpdateData> {
     params['town'] = _townController.text ?? widget.user['town'];
     params['street'] = _streetController.text ?? widget.user['street'] ?? '';
     params['gender'] = _gender ?? widget.user['gender'] ?? '';
+    if (name.isNotEmpty) {
+      params['photo'] = name;
+      params['photo_encode'] = base64Image;
+    }
     progress = loadingWidget(context);
     progress.show();
 
@@ -909,27 +936,153 @@ class _UpdateDataState extends State<UpdateData> {
                                               ],
                                             ),
                               SizedBox(
-                                height: 30.0,
+                                height: 5.0,
                               ),
-                              _currentPage == 0
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
-                                      child: Text('Retour',
-                                          style: TextStyle(color: Colors.grey)),
-                                    )
-                                  : InkWell(
-                                      onTap: () {
-                                        setPage(--_currentPage);
-                                      },
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15.0),
-                                        child: Text('Retour',
-                                            style:
-                                                TextStyle(color: Colors.red)),
-                                      ),
-                                    )
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  _currentPage > 2
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 20.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text('Photo de profil'),
+                                              SizedBox(
+                                                width: 10.0,
+                                              ),
+                                              InkWell(
+                                                onTap: getGalleryImage,
+                                                child: Container(
+                                                  width: 55.0,
+                                                  height: 55.0,
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: 50.0,
+                                                        height: 50.0,
+                                                        child: ClipOval(
+                                                            child:
+                                                                FutureBuilder(
+                                                                    future:
+                                                                        file,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<File>
+                                                                            snapshot) {
+                                                                      if (snapshot.connectionState ==
+                                                                              ConnectionState
+                                                                                  .done &&
+                                                                          null !=
+                                                                              snapshot.data) {
+                                                                        return FutureBuilder(
+                                                                          future:
+                                                                              compress(snapshot.data),
+                                                                          builder:
+                                                                              (BuildContext context, AsyncSnapshot<File> snapshot) {
+                                                                            if (snapshot.connectionState == ConnectionState.done &&
+                                                                                null != snapshot.data) {
+                                                                              name = '${snapshot.data.path.split('/').last}';
+                                                                              base64Image = '${base64Encode(snapshot.data.readAsBytesSync())}';
+                                                                              return Image.file(
+                                                                                snapshot.data,
+                                                                                fit: BoxFit.fill,
+                                                                                width: MediaQuery.of(context).size.width * .5,
+                                                                              );
+                                                                            } else if (null !=
+                                                                                snapshot.error) {
+                                                                              Scaffold.of(context).showSnackBar(SnackBar(
+                                                                                content: Text('Erreur de compression de l\'image'),
+                                                                              ));
+                                                                            }
+                                                                          },
+                                                                        );
+                                                                      }
+                                                                      if (null !=
+                                                                          snapshot
+                                                                              .error) {
+                                                                        Scaffold.of(context)
+                                                                            .showSnackBar(SnackBar(
+                                                                          content:
+                                                                              Text('Erreur de recuperation de l\'image'),
+                                                                        ));
+                                                                      }
+                                                                      return Image
+                                                                          .network(
+                                                                        imagePath(widget.user['photo'] !=
+                                                                                null
+                                                                            ? widget.user[
+                                                                                'photo']
+                                                                            : widget.user['gender'].toUpperCase() == 'FEMME'
+                                                                                ? 'users/avatar2.jpg'
+                                                                                : 'users/avatar.jpg'),
+                                                                        fit: BoxFit
+                                                                            .fill,
+                                                                      );
+                                                                    })),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment
+                                                            .bottomRight,
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              color:
+                                                                  Colors.blue,
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          10.0))),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            child: Icon(
+                                                              Icons.mode_edit,
+                                                              size: 15.0,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  _currentPage == 0
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 15.0),
+                                          child: Text('Retour',
+                                              style: TextStyle(
+                                                  color: Colors.grey)),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            setPage(--_currentPage);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
+                                            child: Text('Retour',
+                                                style: TextStyle(
+                                                    color: Colors.red)),
+                                          ),
+                                        )
+                                ],
+                              )
                             ],
                           ),
                         ),

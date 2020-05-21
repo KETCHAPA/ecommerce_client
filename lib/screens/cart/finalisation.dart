@@ -184,7 +184,7 @@ class _FinalisationPageState extends State<FinalisationPage> {
                                   children: <Widget>[
                                     Text(
                                       '${snapshot.data['name'].toUpperCase()}',
-                                      style: TextStyle(fontSize: 19.0),
+                                      style: TextStyle(fontSize: 15.0),
                                     ),
                                     Spacer(),
                                     Text(
@@ -197,7 +197,7 @@ class _FinalisationPageState extends State<FinalisationPage> {
                                   children: <Widget>[
                                     Text(
                                       snapshot.data['email'],
-                                      style: TextStyle(fontSize: 18.0),
+                                      style: TextStyle(fontSize: 14.0),
                                     ),
                                   ],
                                 ),
@@ -205,7 +205,7 @@ class _FinalisationPageState extends State<FinalisationPage> {
                                   children: <Widget>[
                                     Text(
                                       '${snapshot.data['street']} - ${snapshot.data['address']}',
-                                      style: TextStyle(fontSize: 18.0),
+                                      style: TextStyle(fontSize: 14.0),
                                     ),
                                   ],
                                 ),
@@ -213,7 +213,7 @@ class _FinalisationPageState extends State<FinalisationPage> {
                                   children: <Widget>[
                                     Text(
                                       '${snapshot.data['town']} - ${snapshot.data['country']}',
-                                      style: TextStyle(fontSize: 18.0),
+                                      style: TextStyle(fontSize: 14.0),
                                     ),
                                   ],
                                 ),

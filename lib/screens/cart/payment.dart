@@ -1,3 +1,4 @@
+import 'package:client_bos_final/common/removeAccent.dart';
 import 'package:client_bos_final/custom/menu_finalisation.dart';
 import 'package:client_bos_final/custom/sweetAlert.dart';
 import 'package:client_bos_final/screens/cart/lastVerification.dart';
@@ -31,6 +32,8 @@ class PaymentPage extends StatefulWidget {
   _PaymentPageState createState() => _PaymentPageState();
 }
 
+List<int> om = [], momo = [];
+
 class _PaymentPageState extends State<PaymentPage> {
   ProgressDialog progress;
   int isSelectedPayment = -1,
@@ -46,6 +49,8 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     super.initState();
+    om.clear();
+    momo.clear();
     for (var item in widget.shops) {
       if (!_filteredShop.contains(item)) {
         _filteredShop.add(item);
@@ -257,6 +262,43 @@ class _PaymentPageState extends State<PaymentPage> {
                                             payName =
                                                 snapshot.data[index]['name'];
                                           });
+                                          if (removeDiacritics(snapshot
+                                                      .data[index]['name'])
+                                                  .toLowerCase()
+                                                  .contains('orange money') ||
+                                              removeDiacritics(
+                                                      snapshot.data[index]
+                                                          ['description'])
+                                                  .toLowerCase()
+                                                  .contains('orange money')) {
+                                            if (om.isEmpty) {
+                                              om.add(1);
+                                            }
+                                          } else {
+                                            if (om.isNotEmpty) {
+                                              om.removeLast();
+                                            }
+                                          }
+
+                                          if (removeDiacritics(snapshot
+                                                      .data[index]['name'])
+                                                  .toLowerCase()
+                                                  .contains('mobile money') ||
+                                              removeDiacritics(
+                                                      snapshot.data[index]
+                                                          ['description'])
+                                                  .toLowerCase()
+                                                  .contains('mobile money')) {
+                                            if (momo.isEmpty) {
+                                              momo.add(1);
+                                            }
+                                          } else {
+                                            if (momo.isNotEmpty) {
+                                              momo.removeLast();
+                                            }
+                                          }
+                                          print('OM $om');
+                                          print('MoMo $momo');
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(

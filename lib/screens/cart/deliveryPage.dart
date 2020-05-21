@@ -1,3 +1,4 @@
+import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/custom/menu_finalisation.dart';
 import 'package:client_bos_final/icons/socicon_icons.dart';
 import 'package:client_bos_final/screens/home/home.dart';
@@ -18,6 +19,19 @@ class _DeliveryPageState extends State<DeliveryPage> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      carts = [];
+      quantities = [];
+      cartDescription = [];
+      cartNames = [];
+      length = 0;
+      clearShopInCommand();
+      setCartLength(length);
+      clearTotal();
+      setCartQuantities(quantities);
+      storeProductCart(carts);
+    });
+
     _mailSend1 = sendRecapMail(widget.code1);
     if (widget.code2 != null) {
       _mailSend2 = sendRecapMail(widget.code2);

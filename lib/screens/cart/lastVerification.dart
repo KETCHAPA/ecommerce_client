@@ -2,6 +2,9 @@ import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/custom/loading.dart';
 import 'package:client_bos_final/custom/menu_finalisation.dart';
 import 'package:client_bos_final/screens/cart/deliveryPage.dart';
+import 'package:client_bos_final/screens/cart/payment.dart';
+import 'package:client_bos_final/screens/payment/mtn.dart';
+import 'package:client_bos_final/screens/payment/orange.dart';
 import 'package:client_bos_final/service/commandService.dart';
 import 'package:client_bos_final/service/paymentService.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +66,374 @@ class _FinalPageState extends State<FinalPage> {
     super.initState();
   }
 
+  createData() async {
+    progress = loadingWidget(context);
+    progress.show();
+    var _shopName = widget.items[0].shopName;
+    for (var i = 0; i < widget.items.length; i++) {
+      if (_shopName == widget.items[i].shopName) {
+        prices1 +=
+            '${widget.items[i].newPrice == null || widget.items[i].newPrice == 0 ? widget.items[i].oldPrice : widget.items[i].newPrice} ,';
+        amount1 +=
+            widget.items[i].newPrice == null || widget.items[i].newPrice == 0
+                ? widget.items[i].oldPrice * widget.quantities[i]
+                : widget.items[i].newPrice * widget.quantities[i];
+      } else {
+        prices2 +=
+            '${widget.items[i].newPrice == null || widget.items[i].newPrice == 0 ? widget.items[i].oldPrice : widget.items[i].newPrice} ,';
+        amount2 +=
+            widget.items[i].newPrice == null || widget.items[i].newPrice == 0
+                ? widget.items[i].oldPrice * widget.quantities[i]
+                : widget.items[i].newPrice * widget.quantities[i];
+      }
+    }
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params['pro_ids'] = widget.proIds1;
+    params['quantities'] = widget.qties1;
+    params['prices'] = prices1;
+    params['amount'] =
+        (amount1 + widget.liv1Price + widget.pay1Price).toString();
+    print('debut de la premiere commande');
+    await storeCart(params).then((data) async {
+      if (data != null) {
+        Map<String, dynamic> params = Map<String, dynamic>();
+        params['client_id'] = widget.userId.toString();
+        params['cart_id'] = data.id.toString();
+        params['shop_id'] = widget.shopStringIds1;
+        print('commande');
+        await storeCommand(params).then((data) async {
+          if (data != null) {
+            String _commandCode1 = data.code;
+            Map<String, dynamic> params = Map<String, dynamic>();
+            params['ser_id'] = widget.pay1Id.toString();
+            params['importance'] = '2';
+            print('commande service 1');
+            await storeCommandServices(params, _commandCode1)
+                .then((data) async {
+              if (data != null) {
+                progress.show();
+                params['ser_id'] = widget.liv1Id.toString();
+                params['importance'] = '2';
+                print('commande service 2');
+                await storeCommandServices(params, _commandCode1)
+                    .then((data) async {
+                  if (data != null) {
+                    if (widget.liv2Id != null) {
+                      Map<String, dynamic> params = Map<String, dynamic>();
+                      params['pro_ids'] = widget.proIds2;
+                      params['quantities'] = widget.qties2;
+                      params['prices'] = prices2;
+                      params['amount'] =
+                          (amount2 + widget.liv2Price + widget.pay2Price)
+                              .toString();
+                      print('debut de la deuxieme commande');
+                      await storeCart(params).then((data) async {
+                        if (data != null) {
+                          Map<String, dynamic> params = Map<String, dynamic>();
+                          params['client_id'] = widget.userId.toString();
+                          params['cart_id'] = data.id.toString();
+                          params['shop_id'] = widget.shopStringIds2;
+                          print('commande 2');
+                          await storeCommand(params).then((data) async {
+                            if (data != null) {
+                              String _commandCode2 = data.code;
+                              Map<String, dynamic> params =
+                                  Map<String, dynamic>();
+                              params['ser_id'] = widget.pay2Id.toString();
+                              params['importance'] = '3';
+                              print('commande service 3');
+                              await storeCommandServices(params, _commandCode2)
+                                  .then((data) async {
+                                if (data != null) {
+                                  progress.show();
+                                  params['ser_id'] = widget.liv2Id.toString();
+                                  params['importance'] = '3';
+                                  print('commande service 4');
+                                  await storeCommandServices(
+                                          params, _commandCode2)
+                                      .then((data) {
+                                    progress.dismiss();
+                                    if (data != null) {
+                                      om.isNotEmpty
+                                          ? Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      OrangeMoneyPayment(
+                                                        shops: widget.shops,
+                                                        items: widget.items,
+                                                        quantities:
+                                                            widget.quantities,
+                                                        pay1: widget.pay1Price,
+                                                        liv1: widget.liv1Price,
+                                                        pay2: widget.pay2Price,
+                                                        liv2: widget.liv2Price,
+                                                        mailCode1:
+                                                            _commandCode1,
+                                                        mailCode2:
+                                                            _commandCode2,
+                                                        names: widget.names,
+                                                      )))
+                                          : momo.isNotEmpty
+                                              ? Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MoMoPayment(
+                                                            pay1: widget
+                                                                .pay1Price,
+                                                            liv1: widget
+                                                                .liv1Price,
+                                                            pay2: widget
+                                                                .pay2Price,
+                                                            liv2: widget
+                                                                .liv2Price,
+                                                            shops: widget.shops,
+                                                            items: widget.items,
+                                                            mailCode1:
+                                                                _commandCode1,
+                                                            mailCode2:
+                                                                _commandCode2,
+                                                            quantities: widget
+                                                                .quantities,
+                                                            names: widget.names,
+                                                          )))
+                                              : Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DeliveryPage(
+                                                            code1:
+                                                                _commandCode1,
+                                                            code2:
+                                                                _commandCode2,
+                                                          )));
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('Ok')),
+                                                ],
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5.0))),
+                                                elevation: 15.0,
+                                                title: Text('Erreur'),
+                                                content: Row(
+                                                  children: <Widget>[
+                                                    Icon(
+                                                      Icons.warning,
+                                                      color: Colors.red,
+                                                      size: 30.0,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10.0,
+                                                    ),
+                                                    Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            1.1,
+                                                        child: Text(
+                                                            'Impossible de valider le mode de livraison de la boutique ${widget.names[1]}. Verifier votre connexion internet et reessayer.'))
+                                                  ],
+                                                ),
+                                              ));
+                                    }
+                                  });
+                                } else {
+                                  progress.dismiss();
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Ok')),
+                                            ],
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5.0))),
+                                            elevation: 15.0,
+                                            title: Text('Erreur'),
+                                            content: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.warning,
+                                                  color: Colors.red,
+                                                  size: 30.0,
+                                                ),
+                                                SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Container(
+                                                    width: 400.0,
+                                                    child: Text(
+                                                        'Impossible de confirmer la paiement de la boutique ${widget.names[1]}. Verifier votre connexion internet et reessayer.'))
+                                              ],
+                                            ),
+                                          ));
+                                }
+                              });
+                            } else {
+                              progress.dismiss();
+                              SweetAlert.show(context,
+                                  title: 'Une erreur est survenue',
+                                  subtitle:
+                                      'Verifier votre connexion internet et reessayer.',
+                                  style: SweetAlertStyle.error);
+                            }
+                          });
+                        } else {
+                          progress.dismiss();
+                          SweetAlert.show(context,
+                              title: 'Une erreur est survenue',
+                              subtitle:
+                                  'Verifier votre connexion internet et reessayer.',
+                              style: SweetAlertStyle.error);
+                        }
+                        return null;
+                      });
+                    } else {
+                      progress.dismiss();
+                      om.isNotEmpty
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrangeMoneyPayment(
+                                        shops: widget.shops,
+                                        items: widget.items,
+                                        quantities: widget.quantities,
+                                        pay1: widget.pay1Price,
+                                        liv1: widget.liv1Price,
+                                        pay2: widget.pay2Price,
+                                        liv2: widget.liv2Price,
+                                        mailCode1: _commandCode1,
+                                        names: widget.names,
+                                      )))
+                          : momo.isNotEmpty
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MoMoPayment(
+                                            pay1: widget.pay1Price,
+                                            liv1: widget.liv1Price,
+                                            pay2: widget.pay2Price,
+                                            liv2: widget.liv2Price,
+                                            shops: widget.shops,
+                                            items: widget.items,
+                                            mailCode1: _commandCode1,
+                                            quantities: widget.quantities,
+                                            names: widget.names,
+                                          )))
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DeliveryPage(code1: _commandCode1)));
+                    }
+                  } else {
+                    progress.dismiss();
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Ok')),
+                              ],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0))),
+                              elevation: 15.0,
+                              title: Text('Erreur'),
+                              content: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.warning,
+                                    color: Colors.red,
+                                    size: 30.0,
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.1,
+                                      child: Text(
+                                          'Impossible de valider le mode de livraison de la boutique ${widget.names[0]}. Verifier votre connexion internet et reessayer.'))
+                                ],
+                              ),
+                            ));
+                  }
+                });
+              } else {
+                progress.dismiss();
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          actions: <Widget>[
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Ok')),
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0))),
+                          elevation: 15.0,
+                          title: Text('Erreur'),
+                          content: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.warning,
+                                color: Colors.red,
+                                size: 30.0,
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Container(
+                                  width: 400.0,
+                                  child: Text(
+                                      'Impossible de confirmer la paiement de la boutique ${widget.names[0]}. Verifier votre connexion internet et reessayer.'))
+                            ],
+                          ),
+                        ));
+              }
+            });
+          } else {
+            progress.dismiss();
+            SweetAlert.show(context,
+                title: 'Une erreur est survenue',
+                subtitle: 'Verifier votre connexion internet et reessayer.',
+                style: SweetAlertStyle.error);
+          }
+        });
+      } else {
+        progress.dismiss();
+        SweetAlert.show(context,
+            title: 'Une erreur est survenue',
+            subtitle: 'Verifier votre connexion internet et reessayer.',
+            style: SweetAlertStyle.error);
+      }
+      return null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,340 +467,7 @@ class _FinalPageState extends State<FinalPage> {
             ),
             InkWell(
               onTap: () async {
-                progress = loadingWidget(context);
-                progress.show();
-                var _shopName = widget.items[0].shopName;
-                for (var i = 0; i < widget.items.length; i++) {
-                  if (_shopName == widget.items[i].shopName) {
-                    prices1 +=
-                        '${widget.items[i].newPrice == null || widget.items[i].newPrice == 0 ? widget.items[i].oldPrice : widget.items[i].newPrice} ,';
-                    amount1 += widget.items[i].newPrice == null ||
-                            widget.items[i].newPrice == 0
-                        ? widget.items[i].oldPrice * widget.quantities[i]
-                        : widget.items[i].newPrice * widget.quantities[i];
-                  } else {
-                    prices2 +=
-                        '${widget.items[i].newPrice == null || widget.items[i].newPrice == 0 ? widget.items[i].oldPrice : widget.items[i].newPrice} ,';
-                    amount2 += widget.items[i].newPrice == null ||
-                            widget.items[i].newPrice == 0
-                        ? widget.items[i].oldPrice * widget.quantities[i]
-                        : widget.items[i].newPrice * widget.quantities[i];
-                  }
-                }
-                Map<String, dynamic> params = Map<String, dynamic>();
-                params['pro_ids'] = widget.proIds1;
-                params['quantities'] = widget.qties1;
-                params['prices'] = prices1;
-                params['amount'] =
-                    (amount1 + widget.liv1Price + widget.pay1Price).toString();
-                print('debut de la premiere commande');
-                await storeCart(params).then((data) async {
-                  if (data != null) {
-                    Map<String, dynamic> params = Map<String, dynamic>();
-                    params['client_id'] = widget.userId.toString();
-                    params['cart_id'] = data.id.toString();
-                    params['shop_id'] = widget.shopStringIds1;
-                    print('commande');
-                    await storeCommand(params).then((data) async {
-                      if (data != null) {
-                        String _commandCode1 = data.code;
-                        Map<String, dynamic> params = Map<String, dynamic>();
-                        params['ser_id'] = widget.pay1Id.toString();
-                        params['importance'] = '2';
-                        print('commande service 1');
-                        await storeCommandServices(params, _commandCode1)
-                            .then((data) async {
-                          if (data != null) {
-                            progress.show();
-                            params['ser_id'] = widget.liv1Id.toString();
-                            params['importance'] = '2';
-                            print('commande service 2');
-                            await storeCommandServices(params, _commandCode1)
-                                .then((data) async {
-                              if (data != null) {
-                                if (widget.liv2Id != null) {
-                                  Map<String, dynamic> params =
-                                      Map<String, dynamic>();
-                                  params['pro_ids'] = widget.proIds2;
-                                  params['quantities'] = widget.qties2;
-                                  params['prices'] = prices2;
-                                  params['amount'] = (amount2 +
-                                          widget.liv2Price +
-                                          widget.pay2Price)
-                                      .toString();
-                                  print('debut de la deuxieme commande');
-                                  await storeCart(params).then((data) async {
-                                    if (data != null) {
-                                      Map<String, dynamic> params =
-                                          Map<String, dynamic>();
-                                      params['client_id'] =
-                                          widget.userId.toString();
-                                      params['cart_id'] = data.id.toString();
-                                      params['shop_id'] = widget.shopStringIds2;
-                                      print('commande 2');
-                                      await storeCommand(params)
-                                          .then((data) async {
-                                        if (data != null) {
-                                          String _commandCode2 = data.code;
-                                          Map<String, dynamic> params =
-                                              Map<String, dynamic>();
-                                          params['ser_id'] =
-                                              widget.pay2Id.toString();
-                                          params['importance'] = '3';
-                                          print('commande service 3');
-                                          await storeCommandServices(
-                                                  params, _commandCode2)
-                                              .then((data) async {
-                                            if (data != null) {
-                                              progress.show();
-                                              params['ser_id'] =
-                                                  widget.liv2Id.toString();
-                                              params['importance'] = '3';
-                                              print('commande service 4');
-                                              await storeCommandServices(
-                                                      params, _commandCode2)
-                                                  .then((data) {
-                                                progress.dismiss();
-                                                if (data != null) {
-                                                  carts = [];
-                                                  quantities = [];
-                                                  length = 0;
-                                                  total = 0;
-                                                  errorMessageText = '';
-                                                  clearShopInCommand();
-                                                  storeProductCart(carts);
-                                                  setCartLength(length);
-                                                  setCartTotal(carts);
-                                                  setCartQuantities(quantities);
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DeliveryPage(
-                                                                code1:
-                                                                    _commandCode1,
-                                                                code2:
-                                                                    _commandCode2,
-                                                              )));
-                                                } else {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          AlertDialog(
-                                                            actions: <Widget>[
-                                                              FlatButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Text(
-                                                                      'Ok')),
-                                                            ],
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            5.0))),
-                                                            elevation: 15.0,
-                                                            title:
-                                                                Text('Erreur'),
-                                                            content: Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                Icon(
-                                                                  Icons.warning,
-                                                                  color: Colors
-                                                                      .red,
-                                                                  size: 30.0,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10.0,
-                                                                ),
-                                                                Container(
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
-                                                                        1.1,
-                                                                    child: Text(
-                                                                        'Impossible de valider le mode de livraison de la boutique ${widget.names[1]}. Verifier votre connexion internet et reessayer.'))
-                                                              ],
-                                                            ),
-                                                          ));
-                                                }
-                                              });
-                                            } else {
-                                              progress.dismiss();
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child:
-                                                                  Text('Ok')),
-                                                        ],
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        5.0))),
-                                                        elevation: 15.0,
-                                                        title: Text('Erreur'),
-                                                        content: Row(
-                                                          children: <Widget>[
-                                                            Icon(
-                                                              Icons.warning,
-                                                              color: Colors.red,
-                                                              size: 30.0,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 10.0,
-                                                            ),
-                                                            Container(
-                                                                width: 400.0,
-                                                                child: Text(
-                                                                    'Impossible de confirmer la paiement de la boutique ${widget.names[1]}. Verifier votre connexion internet et reessayer.'))
-                                                          ],
-                                                        ),
-                                                      ));
-                                            }
-                                          });
-                                        } else {
-                                          progress.dismiss();
-                                          SweetAlert.show(context,
-                                              title: 'Une erreur est survenue',
-                                              subtitle:
-                                                  'Verifier votre connexion internet et reessayer.',
-                                              style: SweetAlertStyle.error);
-                                        }
-                                      });
-                                    } else {
-                                      progress.dismiss();
-                                      SweetAlert.show(context,
-                                          title: 'Une erreur est survenue',
-                                          subtitle:
-                                              'Verifier votre connexion internet et reessayer.',
-                                          style: SweetAlertStyle.error);
-                                    }
-                                    return null;
-                                  });
-                                } else {
-                                  carts = [];
-                                  quantities = [];
-                                  length = 0;
-                                  total = 0;
-                                  errorMessageText = '';
-                                  clearShopInCommand();
-                                  storeProductCart(carts);
-                                  setCartLength(length);
-                                  setCartTotal(carts);
-                                  setCartQuantities(quantities);
-                                  progress.dismiss();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DeliveryPage(
-                                              code1: _commandCode1)));
-                                }
-                              } else {
-                                progress.dismiss();
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          actions: <Widget>[
-                                            FlatButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('Ok')),
-                                          ],
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0))),
-                                          elevation: 15.0,
-                                          title: Text('Erreur'),
-                                          content: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.warning,
-                                                color: Colors.red,
-                                                size: 30.0,
-                                              ),
-                                              SizedBox(
-                                                width: 10.0,
-                                              ),
-                                              Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      1.1,
-                                                  child: Text(
-                                                      'Impossible de valider le mode de livraison de la boutique ${widget.names[0]}. Verifier votre connexion internet et reessayer.'))
-                                            ],
-                                          ),
-                                        ));
-                              }
-                            });
-                          } else {
-                            progress.dismiss();
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                      actions: <Widget>[
-                                        FlatButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Ok')),
-                                      ],
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5.0))),
-                                      elevation: 15.0,
-                                      title: Text('Erreur'),
-                                      content: Row(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.warning,
-                                            color: Colors.red,
-                                            size: 30.0,
-                                          ),
-                                          SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          Container(
-                                              width: 400.0,
-                                              child: Text(
-                                                  'Impossible de confirmer la paiement de la boutique ${widget.names[0]}. Verifier votre connexion internet et reessayer.'))
-                                        ],
-                                      ),
-                                    ));
-                          }
-                        });
-                      } else {
-                        progress.dismiss();
-                        SweetAlert.show(context,
-                            title: 'Une erreur est survenue',
-                            subtitle:
-                                'Verifier votre connexion internet et reessayer.',
-                            style: SweetAlertStyle.error);
-                      }
-                    });
-                  } else {
-                    progress.dismiss();
-                    SweetAlert.show(context,
-                        title: 'Une erreur est survenue',
-                        subtitle:
-                            'Verifier votre connexion internet et reessayer.',
-                        style: SweetAlertStyle.error);
-                  }
-                  return null;
-                });
+                createData();
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * .4,

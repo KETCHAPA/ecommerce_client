@@ -106,8 +106,9 @@ Future<bool> sendRecapMail(String code) async {
       var data = json.decode(response.body);
       return data['success'];
     }
-    throw Exception('Impossible d\'envoyer le mail recapitulatif');
+    throw Exception(
+        'Impossible d\'envoyer le mail recapitulatif ${response.body}');
   } catch (e) {
-    throw Exception('Impossible d\'envoyer le mail recapitulatif');
+    throw Exception('Exception $e');
   }
 }

@@ -642,7 +642,7 @@ class _CartPageState extends State<CartPage> {
                       ),
                     );
                   }
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 },
               )),
         ));

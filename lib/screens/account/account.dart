@@ -108,7 +108,7 @@ class _AccountPageState extends State<AccountPage> {
                                         );
                                       }
                                       if (snapshot.hasData) {
-                                        snapshot.data
+                                        snapshot.data == 'true'
                                             ? userIsLogIn = true
                                             : userIsLogIn = false;
                                         return snapshot.data
@@ -122,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
                                                     return Row(
                                                       children: <Widget>[
                                                         Container(
-                                                          height: 90,
+                                                          height: 70,
                                                           width: MediaQuery.of(
                                                                       context)
                                                                   .size
@@ -136,9 +136,9 @@ class _AccountPageState extends State<AccountPage> {
                                                           child: ClipOval(
                                                             child:
                                                                 Image.network(
-                                                              imagePath(snapshot
+                                                              imagePath(snapshot.data['photo'] != null ? snapshot
                                                                               .data[
-                                                                          'photo'] ??
+                                                                          'photo'] :
                                                                       snapshot.data[
                                                                               'gender'] ==
                                                                           'femme'

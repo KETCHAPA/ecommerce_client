@@ -1,5 +1,7 @@
+import 'package:client_bos_final/common/removeAccent.dart';
 import 'package:client_bos_final/custom/menu_finalisation.dart';
 import 'package:client_bos_final/screens/cart/lastVerification.dart';
+import 'package:client_bos_final/screens/cart/payment.dart';
 import 'package:client_bos_final/service/paymentService.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -54,10 +56,12 @@ class _Payment2PageState extends State<Payment2Page> {
   Future<List> livraisons;
   List _filteredShop = [], _filteredShopNames = [];
   String _livName = '', _payName = '';
+  bool canDelete;
 
   @override
   void initState() {
     super.initState();
+    canDelete = false;
     for (var item in widget.shops) {
       if (!_filteredShop.contains(item)) {
         _filteredShop.add(item);
@@ -214,6 +218,46 @@ class _Payment2PageState extends State<Payment2Page> {
                                               _payName =
                                                   snapshot.data[index]['name'];
                                             });
+                                            if (removeDiacritics(snapshot
+                                                        .data[index]['name'])
+                                                    .toLowerCase()
+                                                    .contains('orange money') ||
+                                                removeDiacritics(
+                                                        snapshot.data[index]
+                                                            ['description'])
+                                                    .toLowerCase()
+                                                    .contains('orange money')) {
+                                              if (om.length == 1) {
+                                                om.add(2);
+                                              }
+                                            } else {
+                                              if (om.length > 1) {
+                                                om.removeLast();
+                                              }
+                                            }
+
+                                            if (removeDiacritics(snapshot
+                                                        .data[index]['name'])
+                                                    .toLowerCase()
+                                                    .contains('mobile money') ||
+                                                removeDiacritics(
+                                                        snapshot.data[index]
+                                                            ['description'])
+                                                    .toLowerCase()
+                                                    .contains('mobile money')) {
+                                              if (momo.length < 2) {
+                                                momo.add(2);
+                                                canDelete = true;
+                                              }
+                                            } else {
+                                              if (canDelete) {
+                                                momo.removeLast();
+                                                canDelete = false;
+                                              }
+                                            }
+
+                                            print('OM $om');
+                                            print('MoMo $momo');
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
