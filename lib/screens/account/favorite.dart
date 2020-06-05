@@ -60,8 +60,8 @@ class _FavoriteItemPageState extends State<FavoriteItemPage> {
                           children: <Widget>[
                             Container(
                               height: index % 2 == 0
-                                  ? 205.0
-                                  : index % 3 == 0 ? 195.0 : 185.0,
+                                  ? 200.0
+                                  : index % 3 == 0 ? 190.0 : 180.0,
                               child: Image.network(
                                   imagePath('${favorites[index].photo}'),
                                   fit: BoxFit.fitHeight),

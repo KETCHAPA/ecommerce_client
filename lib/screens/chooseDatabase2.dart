@@ -161,10 +161,6 @@ List<Item> items = [
       image: 'apiecommerce'),
   Item(
       text: 'Mode test',
-      url: 'https://apiecommercetest.bdconsulting-cm.com/api',
-      image: 'apiecommercetest'),
-  Item(
-      text: 'Mode production',
       url: 'https://apiecommerceproduction.bdconsulting-cm.com/api',
       image: 'apiecommerceproduction'),
 ];

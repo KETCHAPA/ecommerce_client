@@ -1022,6 +1022,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                                                               Scaffold.of(context).showSnackBar(SnackBar(
                                                                                 content: Text('Erreur de compression de l\'image'),
                                                                               ));
+                                                                              return Container();
+                                                                            } else {
+                                                                              return Container();
                                                                             }
                                                                           },
                                                                         );

@@ -18,15 +18,8 @@ class FinalisationPage extends StatefulWidget {
   _FinalisationPageState createState() => _FinalisationPageState();
 }
 
-String qties1 = '',
-    qties2 = '',
-    proIds1 = '',
-    proIds2 = '',
-    shopStringIds1 = '',
-    shopStringIds2 = '';
-int amount = 0;
-
 class _FinalisationPageState extends State<FinalisationPage> {
+  int amount;
   @override
   void initState() {
     super.initState();
@@ -68,28 +61,29 @@ class _FinalisationPageState extends State<FinalisationPage> {
                   color: Colors.green[400],
                   child: Icon(Icons.arrow_forward),
                   onPressed: () {
+                    String qties1 = '',
+                        qties2 = '',
+                        proIds1 = '',
+                        proIds2 = '',
+                        shopStringIds1 = '',
+                        shopStringIds2 = '';
                     var _shopNames = widget.items[0].shopName;
-                    List<int> _index1 = [], _index2 = [];
                     for (var i = 0; i < widget.items.length; i++) {
                       if (widget.items[i].shopName == _shopNames) {
                         proIds1 += '${widget.items[i].id.toString()} ,';
                         shopStringIds1 +=
                             '${widget.items[i].shopId.toString()} ,';
-                        _index1.add(i);
+                        qties1 += '${widget.quantities[i].toString()} ,';
                       } else {
                         proIds2 += '${widget.items[i].id.toString()} ,';
                         shopStringIds2 +=
                             '${widget.items[i].shopId.toString()} ,';
-                        _index2.add(i);
+                        qties2 += '${widget.quantities[i].toString()} ,';
                       }
                     }
-                    for (var item in _index1) {
-                      qties1 += '${widget.quantities[item].toString()} ,';
-                    }
-                    for (var item in _index2) {
-                      qties2 += '${widget.quantities[item].toString()} ,';
-                    }
-                    print('qties1=' +
+                    print('items=' +
+                        widget.items.length.toString() +
+                        ', qties1=' +
                         qties1 +
                         ', qties2=' +
                         qties2 +

@@ -65,7 +65,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0))),
                               child: Center(
-                                  child: Text('$length',
+                                  child: Text('$length', 
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 10.0))),

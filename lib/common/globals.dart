@@ -202,13 +202,11 @@ Widget renderStars(int length) {
       scrollDirection: Axis.horizontal,
       itemCount: 5,
       itemBuilder: (BuildContext context, int index) {
-        for (var i = 0; i < length; i++) {
-          return Icon(Icons.star, color: Colors.orange, size: 12.0);
-        }
-        for (var i = 0; i < 5 - length; i++) {
-          return Icon(Icons.star_border, color: Colors.orange, size: 12.0);
-        }
-        return null;
+        return Icon(
+          index < length ? Icons.star : Icons.star_border,
+          size: 12.0,
+          color: Colors.orange,
+        );
       },
     ),
   );

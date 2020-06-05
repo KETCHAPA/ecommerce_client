@@ -18,11 +18,16 @@ class _ChooseDataBaseState extends State<ChooseDataBase> {
     setState(() {
       nextLevel2 = false;
     });
-    modeEndPoint = 'Mode production';
-    endPoint = 'https://apiecommerceproduction.bdconsulting-cm.com/api';
-    imageEndPoint = 'apiecommerceproduction';
     setDatabaseUrl(endPoint, modeEndPoint, imageEndPoint);
     Navigator.pushNamed(context, '/');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    modeEndPoint = 'Mode test';
+    endPoint = 'https://apiecommerceproduction.bdconsulting-cm.com/api';
+    imageEndPoint = 'apiecommerceproduction';
   }
 
   startTime2() {
@@ -100,10 +105,6 @@ List<Item> items = [
       image: 'apiecommerce'),
   Item(
       text: 'Mode test',
-      url: 'https://apiecommercetest.bdconsulting-cm.com/api',
-      image: 'apiecommercetest'),
-  Item(
-      text: 'Mode production',
       url: 'https://apiecommerceproduction.bdconsulting-cm.com/api',
       image: 'apiecommerceproduction'),
 ];

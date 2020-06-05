@@ -108,9 +108,6 @@ class _AccountPageState extends State<AccountPage> {
                                         );
                                       }
                                       if (snapshot.hasData) {
-                                        snapshot.data == 'true'
-                                            ? userIsLogIn = true
-                                            : userIsLogIn = false;
                                         return snapshot.data
                                             ? FutureBuilder(
                                                 future: getCurrentUser(),
@@ -136,14 +133,18 @@ class _AccountPageState extends State<AccountPage> {
                                                           child: ClipOval(
                                                             child:
                                                                 Image.network(
-                                                              imagePath(snapshot.data['photo'] != null ? snapshot
+                                                              imagePath(snapshot
                                                                               .data[
-                                                                          'photo'] :
-                                                                      snapshot.data[
+                                                                          'photo'] !=
+                                                                      null
+                                                                  ? snapshot
+                                                                          .data[
+                                                                      'photo']
+                                                                  : snapshot.data[
                                                                               'gender'] ==
                                                                           'femme'
-                                                                  ? 'users/avatar2.jpg'
-                                                                  : 'users/avatar.jpg'),
+                                                                      ? 'users/avatar2.jpg'
+                                                                      : 'users/avatar.jpg'),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),

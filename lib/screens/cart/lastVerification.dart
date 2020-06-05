@@ -87,6 +87,26 @@ class _FinalPageState extends State<FinalPage> {
                 : widget.items[i].newPrice * widget.quantities[i];
       }
     }
+    print('prices1=' +
+        prices1 +
+        'prices2=' +
+        prices2 +
+        'amount1=' +
+        amount1.toString() +
+        'amount2=' +
+        amount2.toString() +
+        'qties1=' +
+        widget.qties1 +
+        ', qties2=' +
+        widget.qties2 +
+        ', proIds1=' +
+        widget.proIds1 +
+        ', proIds2=' +
+        widget.proIds2 +
+        ', ShopStringIds1=' +
+        widget.shopStringIds1 +
+        ', ShopStringIds2=' +
+        widget.shopStringIds2);
     Map<String, dynamic> params = Map<String, dynamic>();
     params['pro_ids'] = widget.proIds1;
     params['quantities'] = widget.qties1;

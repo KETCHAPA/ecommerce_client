@@ -421,7 +421,9 @@ class _HomePageState extends State<HomePage> {
                                         Align(
                                           alignment: Alignment.center,
                                           child: Container(
-                                              width: 350.0,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               height: 68.0,
                                               child: ListView.builder(
                                                 itemExtent:
@@ -543,7 +545,9 @@ class _HomePageState extends State<HomePage> {
                                         Align(
                                           alignment: Alignment.center,
                                           child: Container(
-                                              width: 350.0,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               height: 68.0,
                                               child: ListView.builder(
                                                 itemExtent:

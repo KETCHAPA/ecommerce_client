@@ -86,7 +86,7 @@ class _ShowProductPageState extends State<ShowProductPage> {
                             children: <Widget>[
                               Container(
                                   width: 40.0,
-                                  height: 24.0,
+                                  height: 23.0,
                                   child: Stack(fit: StackFit.expand, children: <
                                       Widget>[
                                     Icon(
@@ -95,8 +95,8 @@ class _ShowProductPageState extends State<ShowProductPage> {
                                     Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
-                                          width: 15.0,
-                                          height: 15.0,
+                                          width: 13.0,
+                                          height: 13.0,
                                           decoration: BoxDecoration(
                                               gradient: LinearGradient(
                                                   begin: Alignment.topRight,
