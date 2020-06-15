@@ -10,11 +10,6 @@ class RecentlyProductPage extends StatefulWidget {
 
 class _RecentlyProductPageState extends State<RecentlyProductPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

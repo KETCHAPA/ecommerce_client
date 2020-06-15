@@ -30,6 +30,20 @@ storeFavorite(List items) async {
   await prefs.setStringList('favorites', favorites);
 }
 
+getFavoriteShops() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList('favoritesShops') == null
+      ? []
+      : prefs.getStringList('favoritesShops').map((item) => json.decode(item));
+}
+
+storeFavoriteShops(List items) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<String> favorites =
+      items.map((item) => json.encode(item.toJson())).toList();
+  await prefs.setStringList('favoritesShops', favorites);
+}
+
 double parseIntToDouble(int value) {
   return value.toDouble();
 }
@@ -387,6 +401,7 @@ clearShopInCommand() {
 }
 
 List favorites = [],
+    favoritesShops = [],
     carts = [],
     recents = [],
     quantities = [],

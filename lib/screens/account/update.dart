@@ -231,7 +231,7 @@ class _UpdateDataState extends State<UpdateData> {
                                             height: 50.0,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
-                                                    color: Colors.blueGrey),
+                                                    color: Colors.black.withOpacity(.8)),
                                                 borderRadius: BorderRadius.only(
                                                     topRight:
                                                         Radius.circular(40.0))),
@@ -248,12 +248,12 @@ class _UpdateDataState extends State<UpdateData> {
                                               decoration: InputDecoration(
                                                 prefixIcon: Icon(
                                                   Icons.supervisor_account,
-                                                  color: Colors.blueGrey,
+                                                  color: Colors.black.withOpacity(.8),
                                                 ),
                                                 hintText:
                                                     '${widget.user['login']}',
                                                 hintStyle: TextStyle(
-                                                    color: Colors.blueGrey),
+                                                    color: Colors.black.withOpacity(.8)),
                                               ),
                                             )),
                                         Padding(
@@ -267,7 +267,7 @@ class _UpdateDataState extends State<UpdateData> {
                                               height: 50.0,
                                               decoration: BoxDecoration(
                                                 border: Border.all(
-                                                    color: Colors.blueGrey),
+                                                    color: Colors.black.withOpacity(.8)),
                                               ),
                                               child: TextFormField(
                                                 controller: _passwordController,
@@ -284,12 +284,12 @@ class _UpdateDataState extends State<UpdateData> {
                                                 decoration: InputDecoration(
                                                   prefixIcon: Icon(
                                                     Icons.lock,
-                                                    color: Colors.blueGrey,
+                                                    color: Colors.black.withOpacity(.8),
                                                   ),
                                                   border: InputBorder.none,
                                                   hintText: '******',
                                                   hintStyle: TextStyle(
-                                                      color: Colors.blueGrey),
+                                                      color: Colors.black.withOpacity(.8)),
                                                 ),
                                               )),
                                         ),
@@ -304,7 +304,7 @@ class _UpdateDataState extends State<UpdateData> {
                                               height: 50.0,
                                               decoration: BoxDecoration(
                                                   border: Border.all(
-                                                      color: Colors.blueGrey),
+                                                      color: Colors.black.withOpacity(.8)),
                                                   borderRadius:
                                                       BorderRadius.only(
                                                           bottomRight:
@@ -339,7 +339,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                 decoration: InputDecoration(
                                                   prefixIcon: Icon(
                                                     Icons.lock,
-                                                    color: Colors.blueGrey,
+                                                    color: Colors.black.withOpacity(.8),
                                                   ),
                                                   border: InputBorder.none,
                                                   contentPadding:
@@ -347,7 +347,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                           10, 13, 10, 7),
                                                   hintText: '******',
                                                   hintStyle: TextStyle(
-                                                      color: Colors.blueGrey),
+                                                      color: Colors.black.withOpacity(.8)),
                                                 ),
                                               )),
                                         ),
@@ -398,7 +398,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                 height: 50.0,
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
-                                                        color: Colors.blueGrey),
+                                                        color: Colors.black.withOpacity(.8)),
                                                     borderRadius:
                                                         BorderRadius.only(
                                                             topRight:
@@ -419,12 +419,12 @@ class _UpdateDataState extends State<UpdateData> {
                                                   decoration: InputDecoration(
                                                     prefixIcon: Icon(
                                                       Icons.account_circle,
-                                                      color: Colors.blueGrey,
+                                                      color: Colors.black.withOpacity(.8),
                                                     ),
                                                     hintText:
                                                         '${widget.user['name'].toUpperCase()}',
                                                     hintStyle: TextStyle(
-                                                        color: Colors.blueGrey),
+                                                        color: Colors.black.withOpacity(.8)),
                                                   ),
                                                 )),
                                             Padding(
@@ -438,7 +438,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                   height: 50.0,
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
-                                                        color: Colors.blueGrey),
+                                                        color: Colors.black.withOpacity(.8)),
                                                   ),
                                                   child: TextFormField(
                                                     controller:
@@ -457,14 +457,14 @@ class _UpdateDataState extends State<UpdateData> {
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
                                                         Icons.email,
-                                                        color: Colors.blueGrey,
+                                                        color: Colors.black.withOpacity(.8),
                                                       ),
                                                       border: InputBorder.none,
                                                       hintText:
                                                           '${widget.user['email']}',
                                                       hintStyle: TextStyle(
                                                           color:
-                                                              Colors.blueGrey),
+                                                              Colors.black.withOpacity(.8)),
                                                     ),
                                                   )),
                                             ),
@@ -480,7 +480,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                   decoration: BoxDecoration(
                                                       border: Border.all(
                                                           color:
-                                                              Colors.blueGrey),
+                                                              Colors.black.withOpacity(.8)),
                                                       borderRadius:
                                                           BorderRadius.only(
                                                               bottomRight: Radius
@@ -500,7 +500,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
                                                         Icons.phone,
-                                                        color: Colors.blueGrey,
+                                                        color: Colors.black.withOpacity(.8),
                                                       ),
                                                       border: InputBorder.none,
                                                       contentPadding:
@@ -511,7 +511,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                           '${widget.user['phone']}',
                                                       hintStyle: TextStyle(
                                                           color:
-                                                              Colors.blueGrey),
+                                                              Colors.black.withOpacity(.8)),
                                                     ),
                                                   )),
                                             ),
@@ -593,7 +593,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                         prefixIcon: Icon(
                                                           Icons.location_on,
                                                           color:
-                                                              Colors.blueGrey,
+                                                              Colors.black.withOpacity(.8),
                                                         ),
                                                         hintText:
                                                             '${widget.user['country'] ?? 'Non renseigne'}',
@@ -639,7 +639,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                           prefixIcon: Icon(
                                                             Icons.location_city,
                                                             color:
-                                                                Colors.blueGrey,
+                                                                Colors.black.withOpacity(.8),
                                                           ),
                                                           border:
                                                               InputBorder.none,
@@ -693,7 +693,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                             Icons
                                                                 .local_activity,
                                                             color:
-                                                                Colors.blueGrey,
+                                                                Colors.black.withOpacity(.8),
                                                           ),
                                                           border:
                                                               InputBorder.none,
@@ -782,7 +782,7 @@ class _UpdateDataState extends State<UpdateData> {
                                                         prefixIcon: Icon(
                                                           Icons.pin_drop,
                                                           color:
-                                                              Colors.blueGrey,
+                                                              Colors.black.withOpacity(.8),
                                                         ),
                                                         border:
                                                             InputBorder.none,

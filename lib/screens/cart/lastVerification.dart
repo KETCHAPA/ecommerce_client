@@ -121,9 +121,9 @@ class _FinalPageState extends State<FinalPage> {
         params['cart_id'] = data.id.toString();
         params['shop_id'] = widget.shopStringIds1;
         print('commande');
-        await storeCommand(params).then((data) async {
-          if (data != null) {
-            String _commandCode1 = data.code;
+        await storeCommand(params).then((data1) async {
+          if (data1 != null) {
+            String _commandCode1 = data1.code;
             Map<String, dynamic> params = Map<String, dynamic>();
             params['ser_id'] = widget.pay1Id.toString();
             params['importance'] = '2';
@@ -154,9 +154,9 @@ class _FinalPageState extends State<FinalPage> {
                           params['cart_id'] = data.id.toString();
                           params['shop_id'] = widget.shopStringIds2;
                           print('commande 2');
-                          await storeCommand(params).then((data) async {
-                            if (data != null) {
-                              String _commandCode2 = data.code;
+                          await storeCommand(params).then((data2) async {
+                            if (data2 != null) {
+                              String _commandCode2 = data2.code;
                               Map<String, dynamic> params =
                                   Map<String, dynamic>();
                               params['ser_id'] = widget.pay2Id.toString();
@@ -180,6 +180,8 @@ class _FinalPageState extends State<FinalPage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       OrangeMoneyPayment(
+                                                        command1: data1,
+                                                        command2: data2,
                                                         shops: widget.shops,
                                                         items: widget.items,
                                                         quantities:
@@ -200,6 +202,8 @@ class _FinalPageState extends State<FinalPage> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           MoMoPayment(
+                                                            command1: data1,
+                                                            command2: data2,
                                                             pay1: widget
                                                                 .pay1Price,
                                                             liv1: widget
@@ -331,6 +335,7 @@ class _FinalPageState extends State<FinalPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => OrangeMoneyPayment(
+                                        command1: data1,
                                         shops: widget.shops,
                                         items: widget.items,
                                         quantities: widget.quantities,
@@ -346,6 +351,7 @@ class _FinalPageState extends State<FinalPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => MoMoPayment(
+                                            command1: data1,
                                             pay1: widget.pay1Price,
                                             liv1: widget.liv1Price,
                                             pay2: widget.pay2Price,

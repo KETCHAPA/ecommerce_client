@@ -1,6 +1,7 @@
 import 'package:client_bos_final/custom/loading.dart';
 import 'package:client_bos_final/custom/sweetAlert.dart';
 import 'package:client_bos_final/model/clients.dart';
+import 'package:client_bos_final/model/commands.dart';
 import 'package:client_bos_final/screens/cart/deliveryPage.dart';
 import 'package:client_bos_final/screens/cart/payment.dart';
 import 'package:client_bos_final/screens/payment/mtn.dart';
@@ -14,9 +15,12 @@ import 'package:client_bos_final/common/globals.dart';
 class OrangeMoneyPayment extends StatefulWidget {
   final List names, items, quantities, shops;
   final int pay1, pay2, liv1, liv2;
+  final Command command1, command2;
   final String mailCode1, mailCode2;
   OrangeMoneyPayment(
-      {@required this.names,
+      {@required this.command1,
+      this.command2,
+      @required this.names,
       @required this.items,
       @required this.shops,
       @required this.pay2,
@@ -130,19 +134,28 @@ class _OrangeMoneyPaymentState extends State<OrangeMoneyPayment> {
                                   ),
                                   onPressed: () async {
                                     double _amountToPay = 0;
+                                    bool onCommand1 = false, onCommand2 = false;
                                     var uuid = Uuid();
                                     if (om.contains(1)) {
                                       _amountToPay +=
                                           widget.liv1 + widget.pay1 + _amount1;
+                                      onCommand1 = true;
                                     }
                                     if (om.contains(2)) {
                                       _amountToPay +=
                                           widget.liv2 + widget.pay2 + _amount2;
+                                      onCommand2 = true;
                                     }
                                     _amountToPay += _amountToPay * 1 / 100;
                                     Map<String, dynamic> params =
                                         Map<String, dynamic>();
                                     params['amount'] = _amountToPay.toString();
+                                    if (onCommand1) {
+                                      params['command1'] = widget.command1.code;
+                                    }
+                                    if (onCommand2) {
+                                      params['command2'] = widget.command2.code;
+                                    }
                                     params['operator'] = 'ORANGE_CMR';
                                     params['phone'] = _numberController.text;
                                     params['client_reference'] = uuid.v4();
@@ -163,6 +176,10 @@ class _OrangeMoneyPaymentState extends State<OrangeMoneyPayment> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       MoMoPayment(
+                                                          command1:
+                                                              widget.command1,
+                                                          command2:
+                                                              widget.command2,
                                                           items: widget.items,
                                                           liv1: widget.liv1,
                                                           liv2: widget.liv2,

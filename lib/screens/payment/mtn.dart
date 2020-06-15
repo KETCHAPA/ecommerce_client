@@ -1,6 +1,7 @@
 import 'package:client_bos_final/custom/loading.dart';
 import 'package:client_bos_final/custom/sweetAlert.dart';
 import 'package:client_bos_final/model/clients.dart';
+import 'package:client_bos_final/model/commands.dart';
 import 'package:client_bos_final/screens/cart/deliveryPage.dart';
 import 'package:client_bos_final/screens/cart/payment.dart';
 import 'package:client_bos_final/service/onlineService.dart';
@@ -14,8 +15,11 @@ class MoMoPayment extends StatefulWidget {
   final List names, items, quantities, shops;
   final int pay1, pay2, liv1, liv2;
   final String mailCode1, mailCode2;
+  final Command command1, command2;
   MoMoPayment(
-      {@required this.names,
+      {@required this.command1,
+      this.command2,
+      @required this.names,
       @required this.items,
       @required this.shops,
       @required this.pay2,
@@ -128,6 +132,7 @@ class _MoMoPaymentState extends State<MoMoPayment> {
                                   ),
                                   onPressed: () async {
                                     double _amountToPay = 0;
+                                    bool onCommand1 = false, onCommand2 = false;
                                     var uuid = Uuid();
                                     if (om.contains(1)) {
                                       _amountToPay +=
@@ -142,6 +147,14 @@ class _MoMoPaymentState extends State<MoMoPayment> {
                                         Map<String, dynamic>();
                                     params['amount'] = _amountToPay.toString();
                                     params['operator'] = 'MTN_CMR';
+                                    if (onCommand1) {
+                                      params['command1'] = widget.command1.code;
+                                      onCommand1 = true;
+                                    }
+                                    if (onCommand2) {
+                                      params['command2'] = widget.command2.code;
+                                      onCommand2 = true;
+                                    }
                                     params['phone'] = _numberController.text;
                                     params['client_reference'] = uuid.v4();
                                     progress.show();

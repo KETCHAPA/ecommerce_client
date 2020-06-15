@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:client_bos_final/common/ENDPOINT.dart';
 import 'package:client_bos_final/custom/loading.dart';
+import 'package:client_bos_final/service/appService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:client_bos_final/common/globals.dart' as globals;
@@ -388,6 +389,53 @@ class _ShopPageDetailsState extends State<ShopPageDetails> {
                             height: 3.0,
                           ),
                           Text('Note: ${double.parse(admin['note'])}'),
+                          SizedBox(
+                            height: 3.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              RaisedButton(
+                                color: Color(0xff3ee65d),
+                                elevation: 10.0,
+                                onPressed: () => launchWhatsApp(
+                                    phone: '${admin['phone']}',
+                                    message: 'Commande ${admin['name']}'),
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'img/whatsapp.png',
+                                      width: 30.0,
+                                      height: 30.0,
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text('WhatsApp',
+                                        style: TextStyle(color: Colors.white))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              RaisedButton(
+                                color: Colors.white,
+                                elevation: 10.0,
+                                onPressed: () =>
+                                    launchPhoneCall(phone: '${admin['phone']}'),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.phone),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text('Contacter')
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),

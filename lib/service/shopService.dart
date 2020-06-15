@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:client_bos_final/common/ENDPOINT.dart';
-import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/model/products.dart';
-import 'package:client_bos_final/model/shops.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -40,7 +36,7 @@ Future fetchProductsByShopId(int id) async {
         'Erreur de recuperation des produits de la boutique specifiee');
   }
 }
-
+/* 
 Future<List<Shop>> fetchFollowShops() async {
   try {
     final response = await http.get('$endPoint/clients/$userCode/followShops',
@@ -56,3 +52,4 @@ Future<List<Shop>> fetchFollowShops() async {
     throw Exception('Impossible de recuperer les boutiques $e');
   }
 }
+ */

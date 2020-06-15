@@ -1,4 +1,4 @@
-import 'dart:convert';
+/* import 'dart:convert';
 import 'dart:io';
 
 import 'package:client_bos_final/common/globals.dart';
@@ -234,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             height: 50.0,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
-                                                    color: Colors.black.withOpacity(.8)),
+                                                    color: Colors.blueGrey),
                                                 borderRadius: BorderRadius.only(
                                                     topRight:
                                                         Radius.circular(40.0))),
@@ -251,11 +251,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                               decoration: InputDecoration(
                                                 prefixIcon: Icon(
                                                   Icons.supervisor_account,
-                                                  color: Colors.black.withOpacity(.8),
+                                                  color: Colors.blueGrey,
                                                 ),
                                                 hintText: 'Nom d\'utilisateur',
                                                 hintStyle: TextStyle(
-                                                    color: Colors.black.withOpacity(.8)),
+                                                    color: Colors.blueGrey),
                                               ),
                                             )),
                                         Padding(
@@ -269,7 +269,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                               height: 50.0,
                                               decoration: BoxDecoration(
                                                 border: Border.all(
-                                                    color: Colors.black.withOpacity(.8)),
+                                                    color: Colors.blueGrey),
                                               ),
                                               child: TextFormField(
                                                 controller: _passwordController,
@@ -286,12 +286,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 decoration: InputDecoration(
                                                   prefixIcon: Icon(
                                                     Icons.lock,
-                                                    color: Colors.black.withOpacity(.8),
+                                                    color: Colors.blueGrey,
                                                   ),
                                                   border: InputBorder.none,
                                                   hintText: 'Mot de passe',
                                                   hintStyle: TextStyle(
-                                                      color: Colors.black.withOpacity(.8)),
+                                                      color: Colors.blueGrey),
                                                 ),
                                               )),
                                         ),
@@ -306,7 +306,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                               height: 50.0,
                                               decoration: BoxDecoration(
                                                   border: Border.all(
-                                                      color: Colors.black.withOpacity(.8)),
+                                                      color: Colors.blueGrey),
                                                   borderRadius:
                                                       BorderRadius.only(
                                                           bottomRight:
@@ -341,7 +341,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 decoration: InputDecoration(
                                                   prefixIcon: Icon(
                                                     Icons.lock,
-                                                    color: Colors.black.withOpacity(.8),
+                                                    color: Colors.blueGrey,
                                                   ),
                                                   border: InputBorder.none,
                                                   contentPadding:
@@ -349,7 +349,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                           10, 13, 10, 7),
                                                   hintText: 'Confirmation',
                                                   hintStyle: TextStyle(
-                                                      color: Colors.black.withOpacity(.8)),
+                                                      color: Colors.blueGrey),
                                                 ),
                                               )),
                                         ),
@@ -415,7 +415,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 height: 50.0,
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
-                                                        color: Colors.black.withOpacity(.8)),
+                                                        color: Colors.blueGrey),
                                                     borderRadius:
                                                         BorderRadius.only(
                                                             topRight:
@@ -436,11 +436,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                                   decoration: InputDecoration(
                                                     prefixIcon: Icon(
                                                       Icons.account_circle,
-                                                      color: Colors.black.withOpacity(.8),
+                                                      color: Colors.blueGrey,
                                                     ),
                                                     hintText: 'Nom complet',
                                                     hintStyle: TextStyle(
-                                                        color: Colors.black.withOpacity(.8)),
+                                                        color: Colors.blueGrey),
                                                   ),
                                                 )),
                                             Padding(
@@ -454,7 +454,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                   height: 50.0,
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
-                                                        color: Colors.black.withOpacity(.8)),
+                                                        color: Colors.blueGrey),
                                                   ),
                                                   child: TextFormField(
                                                     controller:
@@ -473,13 +473,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
                                                         Icons.email,
-                                                        color: Colors.black.withOpacity(.8),
+                                                        color: Colors.blueGrey,
                                                       ),
                                                       border: InputBorder.none,
                                                       hintText: 'Adresse mail',
                                                       hintStyle: TextStyle(
                                                           color:
-                                                              Colors.black.withOpacity(.8)),
+                                                              Colors.blueGrey),
                                                     ),
                                                   )),
                                             ),
@@ -495,7 +495,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                   decoration: BoxDecoration(
                                                       border: Border.all(
                                                           color:
-                                                              Colors.black.withOpacity(.8)),
+                                                              Colors.blueGrey),
                                                       borderRadius:
                                                           BorderRadius.only(
                                                               bottomRight: Radius
@@ -513,7 +513,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
                                                         Icons.phone,
-                                                        color: Colors.black.withOpacity(.8),
+                                                        color: Colors.blueGrey,
                                                       ),
                                                       border: InputBorder.none,
                                                       contentPadding:
@@ -524,7 +524,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                           'Numero de telephone',
                                                       hintStyle: TextStyle(
                                                           color:
-                                                              Colors.black.withOpacity(.8)),
+                                                              Colors.blueGrey),
                                                     ),
                                                   )),
                                             ),
@@ -621,7 +621,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                         prefixIcon: Icon(
                                                           Icons.location_on,
                                                           color:
-                                                              Colors.black.withOpacity(.8),
+                                                              Colors.blueGrey,
                                                         ),
                                                         hintText: 'Pays',
                                                         hintStyle: TextStyle(
@@ -666,7 +666,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                           prefixIcon: Icon(
                                                             Icons.location_city,
                                                             color:
-                                                                Colors.black.withOpacity(.8),
+                                                                Colors.blueGrey,
                                                           ),
                                                           border:
                                                               InputBorder.none,
@@ -719,7 +719,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                             Icons
                                                                 .local_activity,
                                                             color:
-                                                                Colors.black.withOpacity(.8),
+                                                                Colors.blueGrey,
                                                           ),
                                                           border:
                                                               InputBorder.none,
@@ -825,7 +825,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                         prefixIcon: Icon(
                                                           Icons.pin_drop,
                                                           color:
-                                                              Colors.black.withOpacity(.8),
+                                                              Colors.blueGrey,
                                                         ),
                                                         border:
                                                             InputBorder.none,
@@ -1119,3 +1119,4 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+ */

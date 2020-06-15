@@ -1,7 +1,7 @@
 import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/screens/account/account.dart';
 import 'package:client_bos_final/screens/account/favorite.dart';
-import 'package:client_bos_final/screens/account/setting.dart'; 
+import 'package:client_bos_final/screens/account/setting.dart';
 import 'package:client_bos_final/screens/cart/carts.dart';
 import 'package:client_bos_final/screens/category/category.dart';
 import 'package:client_bos_final/screens/chooseDatabase.dart';
@@ -19,6 +19,8 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   void initState() {
     favorites = getFavorite();
+    favorites = getFavoriteShops();
+    carts = getCart();
   }
 
   @override
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
         '/shop': (context) => ShopPage(),
         '/': (context) => LauncherPage(),
         '/splash': (context) => SplashScreen(),
-        '/choose': (context) => ChooseDataBase()
+        '/choose': (context) => ChooseDataBase(),
       },
     );
   }

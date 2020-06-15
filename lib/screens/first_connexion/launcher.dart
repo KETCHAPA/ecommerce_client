@@ -19,14 +19,22 @@ class LauncherPage extends StatefulWidget {
 }
 
 class _LauncherPageState extends State<LauncherPage> {
+  bool haveToStart = true;
+
+  int _currentPage = 0;
+  PageController _pageController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _fillData();
+  }
+
   startTime() {
     Duration _duration = new Duration(seconds: 3);
     return new Timer(_duration, navigationBar);
   }
 
-  PageController _pageController = PageController(initialPage: 0);
-  int _currentPage = 0;
-  bool haveToStart = true;
   void navigationBar() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
@@ -81,28 +89,22 @@ class _LauncherPageState extends State<LauncherPage> {
     quantities = await getCartQuantities();
     carts = (await getCart()).map((cart) => Product.fromJson(cart)).toList();
     favorites =
-        (await getFavorite()).map((cart) => Product.fromJson(cart)).toList();
+        (await getFavorite()).map((fav) => Product.fromJson(fav)).toList();
+    favoritesShops =
+        (await getFavoriteShops()).map((shop) => Shop.fromJson(shop)).toList();
 
     for (var item in carts) {
       cartDescription.add(item.description);
       cartNames.add(item.name);
+      commandShopIds.add(item.shopId);
+      shopNames.add(item.shopName);
     }
     for (var item in favorites) {
       favoriteDescriptions.add(item.description);
       favoriteNames.add(item.name);
     }
 
-    for (var item in carts) {
-      commandShopIds.add(item.shopId);
-      shopNames.add(item.shopName);
-    }
     setNumberOfShopInCommand();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _fillData();
   }
 
   @override
@@ -277,12 +279,6 @@ class _LauncherPageState extends State<LauncherPage> {
 }
 
 class LauncherSubPage {
-  final String title;
-  final String text;
-  final Widget widget;
-  final Widget actionText;
-  final bool showNext;
-  final bool showPrevious;
   LauncherSubPage(
       {this.title,
       this.text,
@@ -290,6 +286,13 @@ class LauncherSubPage {
       this.actionText,
       this.showNext,
       this.showPrevious});
+
+  final Widget actionText;
+  final bool showNext;
+  final bool showPrevious;
+  final String text;
+  final String title;
+  final Widget widget;
 }
 
 List<LauncherSubPage> list = [

@@ -70,20 +70,23 @@ class _SplashScreenState extends State<SplashScreen> {
     carts = (await getCart()).map((cart) => Product.fromJson(cart)).toList();
     favorites =
         (await getFavorite()).map((cart) => Product.fromJson(cart)).toList();
+    favoritesShops =
+        (await getFavoriteShops()).map((shop) => Shop.fromJson(shop)).toList();
 
     for (var item in carts) {
       cartDescription.add(item.description);
       cartNames.add(item.name);
+      commandShopIds.add(item.shopId);
+      shopNames.add(item.shopName);
     }
     for (var item in favorites) {
       favoriteDescriptions.add(item.description);
       favoriteNames.add(item.name);
     }
-
-    for (var item in carts) {
-      commandShopIds.add(item.shopId);
-      shopNames.add(item.shopName);
+    for (var item in favoritesShops) {
+      favoritesShops.add(item.name);
     }
+
     setNumberOfShopInCommand();
   }
 

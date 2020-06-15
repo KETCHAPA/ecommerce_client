@@ -56,9 +56,46 @@ Future fetchWaitingCommands(String code) async {
         return data['data'];
       }
     }
-    throw Exception('Impossible de recuperer les commandes en attente');
+    throw Exception(
+        'Impossible de recuperer les commandes en attente ${response.statusCode}');
   } catch (e) {
-    throw Exception('Impossible de recuperer les commandes en attente');
+    throw Exception('Impossible de recuperer les commandes en attente $e');
+  }
+}
+
+Future fetchProcessedCommands(String code) async {
+  try {
+    String token = await getUserToken();
+    final response = await http.get('$endPoint/clients/$code/validateCommands',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      if (data['success']) {
+        return data['data'];
+      }
+    }
+    throw Exception(
+        'Impossible de recuperer les commandes en attente ${response.statusCode}');
+  } catch (e) {
+    throw Exception('Impossible de recuperer les commandes en attente $e');
+  }
+}
+
+Future fetchRejectedCommands(String code) async {
+  try {
+    String token = await getUserToken();
+    final response = await http.get('$endPoint/clients/$code/rejectedCommands',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      if (data['success']) {
+        return data['data'];
+      }
+    }
+    throw Exception(
+        'Impossible de recuperer les commandes en attente ${response.statusCode}');
+  } catch (e) {
+    throw Exception('Impossible de recuperer les commandes en attente $e');
   }
 }
 
@@ -91,9 +128,9 @@ Future fetchAllCommands(String code) async {
         return data['data'];
       }
     }
-    throw Exception('Impossible de recuperer les commandes');
+    throw Exception('Impossible de recuperer les commandes ${response.body}');
   } catch (e) {
-    throw Exception('Impossible de recuperer les commandes');
+    throw Exception('Impossible de recuperer les commandes $e');
   }
 }
 

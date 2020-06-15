@@ -17,19 +17,37 @@ class _CommandPageState extends State<CommandPage> {
   var client;
   List products;
   String statut;
+  bool _isAllMode = false;
   Future _commands;
   String _errorMessage;
+  List<OptionView> data;
+  int currentDataIndex = 0;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+
+    data = [
+      OptionView("Toutes", fetchAllCommands(widget.code), 'Aucune commande'),
+      OptionView("en attente", fetchWaitingCommands(widget.code),
+          'Aucune commande en attente'),
+      OptionView("en cours de traitement", fetchProcessedCommands(widget.code),
+          'Aucune commande en cours de traitement'),
+      OptionView("rejetees", fetchRejectedCommands(widget.code),
+          'Aucune commande rejetee'),
+      OptionView("cloturees", fetchOnRoadCommands(widget.code),
+          'Aucune commande cloturee')
+    ];
+
     if (widget.filter == 'en_attente') {
       _commands = fetchWaitingCommands(widget.code);
       _errorMessage = 'Aucune commande en attente';
     } else if (widget.filter == 'en_route') {
       _commands = fetchOnRoadCommands(widget.code);
-      _errorMessage = 'Aucune commande en attente';
+      _errorMessage = 'Aucune commande en route';
     } else {
+      _isAllMode = true;
       _commands = fetchAllCommands(widget.code);
       _errorMessage = 'Aucune commande';
     }
@@ -38,9 +56,71 @@ class _CommandPageState extends State<CommandPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(widget.title),
+          actions: <Widget>[
+            _isAllMode
+                ? IconButton(
+                    icon: Icon(Icons.sort),
+                    tooltip: 'Filtrer',
+                    onPressed: () =>
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      backgroundColor: Colors.black87,
+                      elevation: 10.0,
+                      action: SnackBarAction(
+                        textColor: Colors.redAccent,
+                        label: 'Fermer',
+                        onPressed: () =>
+                            _scaffoldKey.currentState.hideCurrentSnackBar(),
+                      ),
+                      duration: new Duration(minutes: 1),
+                      content: Container(
+                        height: 30.0 * data.length,
+                        child: ListView.builder(
+                          itemBuilder: (context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _commands = data[index].link;
+                                  _errorMessage = data[index].error;
+                                  currentDataIndex = index;
+                                });
+                                _scaffoldKey.currentState.hideCurrentSnackBar();
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 2.5),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      index == currentDataIndex
+                                          ? Icons.check_circle_outline
+                                          : Icons.brightness_1,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      data[index].title,
+                                      style: TextStyle(
+                                          fontWeight: index == currentDataIndex
+                                              ? FontWeight.bold
+                                              : FontWeight.normal),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          itemCount: data.length,
+                        ),
+                      ),
+                    )),
+                  )
+                : SizedBox()
+          ],
         ),
         body: FutureBuilder(
             future: _commands,
@@ -76,7 +156,7 @@ class _CommandPageState extends State<CommandPage> {
                                     : commands[index]['already_delivered'] ==
                                             '2'
                                         ? 'En route'
-                                        : 'Cloturee';
+                                        : 'Rejetee';
 
                             return Padding(
                               padding:
@@ -121,4 +201,11 @@ class _CommandPageState extends State<CommandPage> {
               return Center(child: CircularProgressIndicator());
             }));
   }
+}
+
+class OptionView {
+  String title;
+  Future link;
+  String error;
+  OptionView(this.title, this.link, this.error);
 }

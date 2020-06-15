@@ -15,10 +15,12 @@ Future<int> fetchDiscountAmount(String code) async {
       final res = json.decode(response.body);
       return res['data'];
     }
-    print(response.statusCode);
-    throw Exception('Impossible de recuperer le montant des bons de reduction');
+    print(code);
+    throw Exception(
+        'Impossible de recuperer le montant des bons de reduction ${response.body}');
   } catch (e) {
-    throw Exception('Impossible de recuperer le montant des bons de reduction $e');
+    throw Exception(
+        'Impossible de recuperer le montant des bons de reduction $e');
   }
 }
 

@@ -12,6 +12,7 @@ import 'package:client_bos_final/screens/auth/register.dart';
 import 'package:client_bos_final/screens/command/commands.dart';
 import 'package:client_bos_final/screens/discount/discounts.dart';
 import 'package:client_bos_final/service/accountService.dart';
+import 'package:client_bos_final/service/appService.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
@@ -23,12 +24,13 @@ class _AccountPageState extends State<AccountPage> {
   Color _color1 = Color(0xff00aedf);
   Color _color2 = Color(0xff63e68e);
   Color _color3 = Color(0xff5b86e5);
-  String userCode;
   bool userIsLogIn;
+  Future _amountOfDiscount;
 
   @override
   void initState() {
     super.initState();
+    _amountOfDiscount = fetchDiscountAmount(userCode);
   }
 
   @override
@@ -504,7 +506,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                         title: Text('Mes coupons'),
                         trailing: Container(
-                          width: 80.0,
+                          width: 110.0,
                           child: Row(
                             children: <Widget>[
                               Text('Montant: ',
@@ -512,29 +514,18 @@ class _AccountPageState extends State<AccountPage> {
                                       color:
                                           userIsLogIn ? _color3 : Colors.grey,
                                       fontSize: 10.0)),
+                              Spacer(),
                               userIsLogIn
                                   ? FutureBuilder(
-                                      future: getCurrentUser(),
+                                      future: _amountOfDiscount,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          return FutureBuilder(
-                                              future: fetchDiscountAmount(
-                                                  snapshot.data['code']),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasData) {
-                                                  return Text(
-                                                      snapshot.data.toString(),
-                                                      style: TextStyle(
-                                                          color: _color3,
-                                                          fontSize: 10.0));
-                                                }
-                                                return Text('0',
-                                                    style: TextStyle(
-                                                        color: _color3,
-                                                        fontSize: 10.0));
-                                              });
+                                          return Text('${snapshot.data} Fcfa',
+                                              style: TextStyle(
+                                                  color: _color3,
+                                                  fontSize: 10.0));
                                         }
-                                        return Text('0',
+                                        return Text('0 Fcfa',
                                             style: TextStyle(
                                                 color: _color3,
                                                 fontSize: 10.0));
@@ -554,17 +545,18 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       title: Text('Mes Buy-Pay'),
                       trailing: Container(
-                        width: 50.0,
+                        width: 100.0,
                         child: Row(
                           children: <Widget>[
                             Text(
-                              'Solde:',
+                              'Solde: ',
                               style: TextStyle(
                                   color: userIsLogIn ? _color3 : Colors.grey,
                                   fontSize: 10.0),
                             ),
+                            Spacer(),
                             Text(
-                              '0',
+                              '0 Fcfa',
                               style: TextStyle(
                                   color: userIsLogIn ? _color3 : Colors.grey,
                                   fontSize: 10.0),
@@ -592,13 +584,35 @@ class _AccountPageState extends State<AccountPage> {
                               return AlertDialog(
                                 title: Text('Service Clientele'),
                                 content: Container(
-                                  height: 50.0,
+                                  height: 90.0,
                                   width: MediaQuery.of(context).size.width / 3,
                                   child: Column(
                                     children: <Widget>[
                                       Text('Veuillez contacter le '),
                                       Text('+33 844 8483',
-                                          style: TextStyle(color: Colors.red))
+                                          style: TextStyle(color: Colors.red)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          RaisedButton(
+                                            color: Colors.white,
+                                            elevation: 10.0,
+                                            onPressed: () => launchPhoneCall(
+                                                phone: '+33 844 8483'),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.phone),
+                                                SizedBox(
+                                                  width: 5.0,
+                                                ),
+                                                Text('Appeler')
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
                                 ),

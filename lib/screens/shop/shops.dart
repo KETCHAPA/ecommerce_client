@@ -1,5 +1,6 @@
 import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/custom/sweetAlert.dart';
+import 'package:client_bos_final/icons/favorite_icons.dart';
 import 'package:client_bos_final/model/shops.dart';
 import 'package:client_bos_final/screens/product/products.dart';
 import 'package:client_bos_final/screens/search/search.dart';
@@ -142,6 +143,17 @@ class _ShopPageState extends State<ShopPage> {
                                               shop: snapshot.data[index],
                                             )));
                               },
+                              onDoubleTap: () {
+                                setState(() {
+                                  if (favoritesShops
+                                      .contains(snapshot.data[index])) {
+                                    favoritesShops.remove(snapshot.data[index]);
+                                  } else {
+                                    favoritesShops.add(snapshot.data[index]);
+                                  }
+                                });
+                                storeFavoriteShops(favoritesShops);
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 30.0),
                                 child: Container(
@@ -195,7 +207,16 @@ class _ShopPageState extends State<ShopPage> {
                                               Row(
                                                 children: <Widget>[
                                                   Spacer(),
-                                                  Icon(Icons.more_vert)
+                                                  Icon(
+                                                    AddToFavorites
+                                                        .add_to_favorite,
+                                                    size: 20.0,
+                                                    color: favoritesShops
+                                                            .contains(snapshot
+                                                                .data[index])
+                                                        ? Colors.pink
+                                                        : Colors.grey,
+                                                  )
                                                 ],
                                               )
                                             ],

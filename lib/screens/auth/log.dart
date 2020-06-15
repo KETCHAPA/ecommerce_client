@@ -1,4 +1,4 @@
-import 'package:client_bos_final/common/globals.dart';
+/* import 'package:client_bos_final/common/globals.dart';
 import 'package:client_bos_final/custom/loading.dart';
 import 'package:client_bos_final/custom/logPainter.dart';
 import 'package:client_bos_final/custom/sweetAlert.dart';
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                       height: 50.0,
                                       decoration: BoxDecoration(
                                           border: Border.all(
-                                              color: Colors.black.withOpacity(.6)),
+                                              color: Colors.blueGrey),
                                           borderRadius: BorderRadius.only(
                                               topRight: Radius.circular(40.0))),
                                       child: TextFormField(
@@ -139,12 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                                         decoration: InputDecoration(
                                           prefixIcon: Icon(
                                             Icons.supervisor_account,
-                                            color: Colors.black.withOpacity(.6),
+                                            color: Colors.blueGrey,
                                           ),
                                           border: InputBorder.none,
                                           hintText: 'Nom d\'utilisateur',
                                           hintStyle:
-                                              TextStyle(color: Colors.black.withOpacity(.6)),
+                                              TextStyle(color: Colors.blueGrey),
                                           contentPadding:
                                               new EdgeInsets.fromLTRB(
                                                   10, 13, 10, 7),
@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                                         height: 50.0,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                color: Colors.black.withOpacity(.6)),
+                                                color: Colors.blueGrey),
                                             borderRadius: BorderRadius.only(
                                                 bottomRight:
                                                     Radius.circular(40.0))),
@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                                           decoration: InputDecoration(
                                             prefixIcon: Icon(
                                               Icons.lock,
-                                              color: Colors.black.withOpacity(.6),
+                                              color: Colors.blueGrey,
                                             ),
                                             border: InputBorder.none,
                                             contentPadding:
@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     10, 13, 10, 7),
                                             hintText: 'mot de passe',
                                             hintStyle: TextStyle(
-                                                color: Colors.black.withOpacity(.6)),
+                                                color: Colors.blueGrey),
                                           ),
                                           onFieldSubmitted: (val) {
                                             _passwordNode.unfocus();
@@ -231,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                                       'Mot de passe oublie ?',
                                       style: TextStyle(
                                           color:
-                                              Colors.black.withOpacity(.6).withOpacity(.7)),
+                                              Colors.blueGrey.withOpacity(.7)),
                                     ),
                                   ),
                                 ),
@@ -281,3 +281,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+ */
